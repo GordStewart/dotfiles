@@ -36,6 +36,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # no binary files for vi(m)
 zstyle ':completion:*:vi:*' ignored-patterns '*.(o|a|so|aux|dvi|log|swp|fig|bbl|blg|bst|idx|ind|out|toc|class|pdf|ps|pyc)'
 zstyle ':completion:*:vim:*' ignored-patterns '*.(o|a|so|aux|dvi|log|swp|fig|bbl|blg|bst|idx|ind|out|toc|class|pdf|ps|pyc)'
+zstyle ':completion:*:nvim:*' ignored-patterns '*.(o|a|so|aux|dvi|log|swp|fig|bbl|blg|bst|idx|ind|out|toc|class|pdf|ps|pyc)'
 
 # no binary files for less
 zstyle ':completion:*:less:*' ignored-patterns '*.(o|a|so|dvi|fig|out|class|pdf|ps|pyc)'
@@ -94,7 +95,6 @@ WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider
 # that those keys can be used for other things.
 setopt no_flowcontrol
 
-ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # From .zshrc
 # Uncomment the following line to automatically update without prompting.
@@ -117,3 +117,15 @@ DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
+
+# Plugin options
+
+#ZSh_AUTOSUGGESTIONS
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+#ZSH_SYNTAX_HIGHLIGHTING
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+# Declare the variable
+typeset -A ZSH_HIGHLIGHT_PATTERNS
+# To have commands starting with 'rm -rf' in red:
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' 'fg=white,bold,bg=red')

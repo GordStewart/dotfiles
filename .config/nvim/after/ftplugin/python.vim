@@ -4,3 +4,9 @@ setlocal softtabstop=4
 "setlocal foldmethod=indent
 setlocal commentstring=#\ %s
 setlocal nospell
+
+let b:ale_linters = ['flake8']
+let b:ale_fixers = [
+\   'isort',
+\   'yapf',
+\]

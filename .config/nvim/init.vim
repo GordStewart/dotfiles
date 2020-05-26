@@ -1,8 +1,8 @@
 " source other config files
 let g:nvim_config_root = stdpath('config')
-let g:config_file_list = ['options.vim',
-            \ 'mappings.vim',
-            \ 'plugins.vim'
+let g:config_file_list = ['plugins.vim',
+            \ 'options.vim',
+            \ 'mappings.vim'
             \ ]
 
 for f in g:config_file_list
@@ -42,5 +42,7 @@ set background=dark
 " let g:one_allow_italics=1
 " colorscheme one
 let g:afterglow_italic_comments=1
-colorscheme afterglow
+" colorscheme afterglow
+" colorscheme OceanicNext
+colorscheme cosmic_latte
 hi Error NONE

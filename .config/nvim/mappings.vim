@@ -1,11 +1,99 @@
 "{ Key Mappings
 
 "{{ Main
-map , <leader>
+map <space> <leader>
+
+inoremap jj <esc>
 inoremap jk <esc>
 nnoremap ; :
+
+" redo
+nnoremap U <C-r>
+
+nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :qa!<CR>
 "}}
 
+
+"{{ Files [f]
+nnoremap <silent> <leader>fs :update<CR>
+nnoremap <leader>f? :Files<CR>
+nnoremap <leader>ff :Files ~/<CR>
+nnoremap <Leader>fR :source ~/.config/nvim/init.vim<CR>
+"}}
+
+
+"{{ Buffers [b]
+nnoremap <leader>bb :Clap buffers<CR>
+nnoremap <leader>bd :bd<CR>
+nnoremap <leader>bn :bn<CR>
+nnoremap <leader>bp :bp<CR>
+nnoremap <leader>bh :Startify<CR>
+"}}
+
+"{{ LSP Functions [l]
+nnoremap <leader>lf :call CocAction('format')<CR>
+nnoremap <leader>lh :call CocAction('doHover')<CR>
+nmap <silent> <Leader>ld <Plug>(coc-definition)
+nmap <silent> <Leader>gy <Plug>(coc-type-definition)
+nmap <silent> <Leader>li <Plug>(coc-implementation)
+nmap <silent> <Leader>lr <Plug>(coc-references)
+" Find symbol of current document
+nnoremap <silent> <Leader>ls  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <Leader>lS  :<C-u>CocList -I symbols<cr>
+"}}
+
+"{{ Toggle [t]
+nnoremap <leader>ti :IndentLinesToggle<CR>
+nnoremap <Leader>tn :set number!<CR>
+nnoremap <Leader>tr :set relativenumber!<CR>
+nnoremap <Leader>tgl :GitGutterLineHighlightsToggle<CR>
+nnoremap <Leader>tgn :GitGutterLineNrHighlightsToggle<CR>
+nnoremap <Leader>tgs :GitGutterSignsToggle<CR>
+nnoremap <Leader>tc :call ToggleConceal()<CR>
+nnoremap <silent> <Leader>tp :setlocal paste!<CR>
+"}]}
+
+"{{ Windows [w]
+nnoremap <leader>wm <C-w><bar>
+nnoremap <leader>w= <C-w>=
+nnoremap <leader>wv :vsp<CR>
+nnoremap <leader>wc <C-w>c
+nnoremap <leader>wh <C-w>h
+nnoremap <leader>wH <C-w>H
+nnoremap <leader>wl <C-w>l
+nnoremap <leader>wL <C-w>L
+nnoremap <leader>wk <C-w>k
+nnoremap <leader>wK <C-w>K
+nnoremap <leader>wj <C-w>j
+nnoremap <leader>wJ <C-w>J
+
+for s:i in range(1, 9)
+  " <Leader>[1-9] move to window [1-9]
+  execute 'nnoremap <Leader>'.s:i ' :'.s:i.'wincmd w<CR>'
+
+  " <Leader><leader>[1-9] move to tab [1-9]
+  execute 'nnoremap <Leader><Leader>'.s:i s:i.'gt'
+
+  " <Leader>b[1-9] move to buffer [1-9]
+  execute 'nnoremap <Leader>b'.s:i ':b'.s:i.'<CR>'
+endfor
+unlet s:i
+
+"}}
+
+"{{ QuickFix Window
+noremap <leader>ql :call asyncrun#quickfix_toggle(8)<cr>
+"}}
+"
+"{{ Text manipulation [x]
+xmap <Leader>xa <Plug>(EasyAlign)
+nmap <Leader>xa <Plug>(EasyAlign)
+
+nmap <Leader>xic crc
+nmap <Leader>xim crm
+"}}
 
 "{{ Function Keys
 
@@ -13,18 +101,24 @@ set pastetoggle=<F3>
 
 nnoremap <F5> :MundoToggle<CR>
 
-map <F6> :CocCommand explorer<CR>
+map <silent> <F6> :CocCommand explorer --preset floating<CR>
 
 " toggle Fold open/close
 nnoremap <Space><Space> za
 
 " toggle Vista
-noremap  <silent> <F10>           <Esc>:call util#toggleWindows('vista')<CR>
-noremap! <silent> <F10>           <Esc>:call util#toggleWindows('vista')<CR>
+" noremap  <silent> <F10>           <Esc>:call util#toggleWindows('vista')<CR>
+" noremap! <silent> <F10>           <Esc>:call util#toggleWindows('vista')<CR>
+nnoremap <silent> <F10> :Vista!!<CR>
 
+" <F12> is assigned to FloatermToggle [Floaterm section]
 "}}
 
 "{{ Movement / Scrolling
+
+" Visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
 
 " Wrapped lines go up/down to next row, rather than next line
 nnoremap <silent> j gj
@@ -36,6 +130,11 @@ xnoremap <silent> k gk
 " increase scroll amounts
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
+
+" move to the start of line
+nnoremap H ^
+" move to the end of line
+nnoremap L $
 
 " Search
 "Make searches appear in centre of page
@@ -74,14 +173,11 @@ xnoremap <Leader>r "sy:%s/<C-r>s//<Left>
 " Y copies from cursor to end of line
 nnoremap Y y$
 
-" Saving and Quitting
-nnoremap <silent> <Leader>w :w<CR>
-
 " FZF Keys
-nnoremap <silent> <space>b :Buffers<CR>
-nnoremap <silent> <space>f :Files<CR>
-nnoremap <silent> <space>F :Files ~/<CR>
-
+" nnoremap <silent> <space>b :Buffers<CR>
+" nnoremap <silent> <space>f :Files<CR>
+" nnoremap <silent> <space>F :Files ~/<CR>
+nmap <Leader>? <plug>(fzf-maps-n)
 
 "{{ coc.nvim
 
@@ -112,11 +208,6 @@ xmap <silent> <C-d> <Plug>(coc-cursors-range)
 
 let g:coc_snippet_next = '<tab>'
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -141,11 +232,12 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" xmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
+
 
 " Using CocList
 
@@ -158,11 +250,6 @@ nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 
 " Do default action for next item.
 nnoremap <silent> <space>j  :<C-u>CocNext<CR>
@@ -176,6 +263,17 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 "{{ ArgWrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
+"}}
+
+
+"{{ WhichKey
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+"}}
+
+"{{ Floaterm
+nnoremap <silent> <F12>     :FloatermToggle<CR>
+tnoremap <silent> <F12>     <C-\><C-n>:FloatermToggle<CR>
+nnoremap <silent> <leader>' :FloatermNew<CR>
 "}}
 
 "} End of Key Mappings

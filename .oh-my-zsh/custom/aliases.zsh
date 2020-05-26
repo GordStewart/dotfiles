@@ -86,13 +86,15 @@ alias -g T='| tail'
 alias free='free -m'   # Show sizes in MB
 # alias gitu='git add . && git commit && git push'
 
-
 # Suffix aliases, open inbackground
 alias -s {pdf,PDF}='background zathura'
 
-alias aliases='nvim ~/dotfiles/zsh/aliases.zsh'
+alias aliases='nvim ~/.oh-my-zsh/custom/aliases.zsh'
 # alias vimkeys='nvim ~/dotfiles/vim/keys.vim'
 # alias vimsettings='nvim ~/dotfiles/vim/settings.vim'
+
+# Shows top 10 commands used from history using "commands" function
+alias topten="history | commands | sort -rn | head"
 
 # Function aliases
 alias fkill='fzf_kill'    # fzf kill process fzf_functions.sh

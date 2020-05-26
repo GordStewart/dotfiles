@@ -27,7 +27,7 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 # X Display server for WSL
-export DISPLAY=localhost:0.0
+export DISPLAY=192.168.1.179:0.0
 
 # Cheat
 export CHEAT_COLORS=true

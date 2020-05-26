@@ -5,10 +5,12 @@ nmap <silent> <buffer> <CR> <C-]>
 nmap <silent> <buffer> <BS> <C-T>
 " q to quit
 nmap <silent> <buffer> q :quit<CR>
+
 " open help file in the left window
 " alternative: e.g. vert help syntax
-autocmd BufWinEnter <buffer> wincmd H
+" autocmd BufWinEnter <buffer> wincmd H
 
-setlocal number
+setlocal norelativenumber
+setlocal nonumber
 setlocal nospell
 setlocal foldmethod=indent
