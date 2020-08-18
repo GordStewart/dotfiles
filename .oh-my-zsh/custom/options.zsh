@@ -1,82 +1,40 @@
-# Completion
-zstyle ':completion:*' group-name ''
-# format all messages not formatted in bold prefixed with ----
-zstyle ':completion:*' format '%B---- %d%b'
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:descriptions' format "$fg[yellow]%B--- %d%b"
-zstyle ':completion:*:options' verbose yes
-zstyle ':completion:*:values' verbose yes
-zstyle ':completion:*:warnings' format "$fg[red]No matches for:$reset_color %d"
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
-zstyle ':completion:*:options' prefix-needed yes
-
-zstyle ':completion:*' use-cache true
-# Enable menu completion
-zstyle ':completion*:default' menu select=1
-zstyle ':completion:*' matcher-list \
-    '' \
-    'm:{a-z}={A-Z}' \
-'l:|=* r:|[.,_-]=* r:|=* m:{a-z}={A-Z}'
-# allow approximate matching
-zstyle ':completion:*:approximate:*'  max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
-# sudo completions
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
-    /usr/sbin /usr/bin /sbin /bin
-zstyle ':completion:*' menu select
-zstyle ':completion:*' keep-prefix
-zstyle ':completion:*' completer _oldlist _complete _match _ignored \
-_approximate _list _history
-# use dircolours in completion listings
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-
-
-
-# no binary files for vi(m)
-zstyle ':completion:*:vi:*' ignored-patterns '*.(o|a|so|aux|dvi|log|swp|fig|bbl|blg|bst|idx|ind|out|toc|class|pdf|ps|pyc)'
-zstyle ':completion:*:vim:*' ignored-patterns '*.(o|a|so|aux|dvi|log|swp|fig|bbl|blg|bst|idx|ind|out|toc|class|pdf|ps|pyc)'
-zstyle ':completion:*:nvim:*' ignored-patterns '*.(o|a|so|aux|dvi|log|swp|fig|bbl|blg|bst|idx|ind|out|toc|class|pdf|ps|pyc)'
-
-# no binary files for less
-zstyle ':completion:*:less:*' ignored-patterns '*.(o|a|so|dvi|fig|out|class|pdf|ps|pyc)'
-
-# tar files
-zstyle ':completion:*:tar:*' files '*.tar|*.tgz|*.tz|*.tar.Z|*.tar.bz2|*.tZ|*.tar.gz'
-
-# Separate man page sections
-zstyle ':completion:*:manuals' seperate-sections true
-# Separate comand line options and descriptions with #
-zstyle ':completion:*' list-separator '#'
-# Generate descriptions for arguments
-zstyle ':completion:*' auto-description 'specify: %d'
-
-setopt nobeep           # No Beeping
-setopt AUTOPUSHD PUSHDMINUS PUSHDSILENT PUSHDTOHOME
-setopt autocd			    # cd by typing dirname
-setopt cdablevars	        # Follow variables which are dirnames
-setopt interactivecomments	# allow comments on cmd line.
-setopt glob_complete
-setopt path_dirs            # Can search subdirectory in $PATH
-setopt EXTENDED_GLOB        # Enable extended globbing
+setopt nobeep               # No Beeping
 setopt correct              # Enable Spellcheck
+setopt NO_FLOW_CONTROL      # disable start/stop chars in shell editor (^S, ^Q)
+# Directories
+setopt AUTOPUSHD PUSHDMINUS PUSHDSILENT PUSHDTOHOME
+setopt autocd			    # `dirname` is equivalent to `cd dirname`
+setopt cdablevars	        # Follow variables which are dirnames
+setopt mark_dirs            # Add "/" if completes directory
+setopt auto_param_slash     # if completed parameter is a directory, add a trailing slash
+setopt path_dirs            # Can search subdirectory in $PATH
+
+setopt interactivecomments	# allow comments on cmd line.
+
+# Globs
+setopt glob_complete
+setopt EXTENDED_GLOB        # Enable extended globbing
+setopt nocaseglob           # Case insensitive globbing
+setopt numericglobsort      # Sort filenames numerically when it makes sense
+
 setopt BANG_HIST		    # Allow ! for accessing history
 setopt rm_star_wait         # if `rm *` wait 10 seconds before performing it!
+
+# Completion Menu
 setopt auto_menu            # show completion menu on succesive tab press
+
+
 setopt promptsubst
 setopt long_list_jobs       # Better jobs
-setopt mark_dirs            # Add "/" if completes directory
-setopt nocaseglob           # Case insensitive globbing
 #setopt rcexpandparam       # Array expension with parameters
-setopt numericglobsort      # Sort filenames numerically when it makes sense
+
 # List completion
 setopt auto_list
-setopt auto_param_slash
 setopt auto_param_keys
-# List like "ls -F"
-setopt list_types
-# Compact completion
-setopt list_packed
+# setopt list_types # List like "ls -F"
+# setopt list_packed # Compact completion
+
 # History
 setopt SHARE_HISTORY
 setopt extended_history             # save beginning time and elapsed time before commands in history
@@ -90,11 +48,6 @@ HISTFILE=$HOME/.cache/zsh/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
-
-# By default, ^S freezes terminal output and ^Q resumes it. Disable that so
-# that those keys can be used for other things.
-setopt no_flowcontrol
-
 
 # From .zshrc
 # Uncomment the following line to automatically update without prompting.

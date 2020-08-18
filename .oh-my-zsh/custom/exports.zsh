@@ -6,6 +6,7 @@ PATH=${PATH}:/sbin
 PATH=${PATH}:"/usr/local/sbin"
 PATH=${PATH}:"/home/gordon/.dotfiles/bin"
 PATH=${PATH}:"/home/gordon/.local/bin"
+PATH=${PATH}:"/mnt/c/Windows/System32"
 
 export -U PATH=${PATH}
 
@@ -26,8 +27,25 @@ export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
+# This affects every invocation of `less`.
+#
+#   -i   case-insensitive search unless search string contains uppercase letters
+#   -R   color
+#   -F   exit if there is less than one page of content
+#   -X   keep content on screen after exit
+#   -M   show more info at the bottom prompt line
+#   -x4  tabs are 4 instead of 8
+export LESS=-iRFXMx4
+
 # X Display server for WSL
-export DISPLAY=192.168.1.179:0.0
+# export DISPLAY=192.168.1.179:0.0
+
+if [[ "$(</proc/version)" == *icrosoft* ]] 2>/dev/null; then
+  export WSL=1
+  export DISPLAY=192.168.1.179:0.0
+  export NO_AT_BRIDGE=1
+  export LIBGL_ALWAYS_INDIRECT=1
+fi
 
 # Cheat
 export CHEAT_COLORS=true

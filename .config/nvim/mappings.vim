@@ -12,11 +12,15 @@ nnoremap U <C-r>
 
 nnoremap <leader>q :q<CR>
 nnoremap <leader>Q :qa!<CR>
+
+" list like utilities:
+cnoremap <expr> <CR> util#CCR()
 "}}
 
 
 "{{ Files [f]
 nnoremap <silent> <leader>fs :update<CR>
+nnoremap <silent> <leader>fS :wall<CR>
 nnoremap <leader>f? :Files<CR>
 nnoremap <leader>ff :Files ~/<CR>
 nnoremap <Leader>fR :source ~/.config/nvim/init.vim<CR>
@@ -29,6 +33,18 @@ nnoremap <leader>bd :bd<CR>
 nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 nnoremap <leader>bh :Startify<CR>
+nnoremap <leader>bY :execute 'normal! ggVG"+y``'<CR>
+nnoremap <leader>bP :call util#pasteWholeBuffer()<CR>
+"}}
+
+"{{ Jumping [j]
+" Jump to beginning of line + set mark at previous location
+nnoremap <leader>j0 m`^
+" Jump to end of line + set mark at previous location
+nnoremap <leader>j$ m`g_
+" Jump Backwards + Forward
+nnoremap <leader>jb <C-o>
+nnoremap <leader>jf <C-i>
 "}}
 
 "{{ LSP Functions [l]
@@ -101,7 +117,7 @@ set pastetoggle=<F3>
 
 nnoremap <F5> :MundoToggle<CR>
 
-map <silent> <F6> :CocCommand explorer --preset floating<CR>
+map <silent> <F6> :CocCommand explorer --preset floatingLeftside<CR>
 
 " toggle Fold open/close
 nnoremap <Space><Space> za
@@ -119,6 +135,10 @@ nnoremap <silent> <F10> :Vista!!<CR>
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
+
+
+" select last changed text (or text just pasted)
+nnoremap <Leader>gp `[v`]
 
 " Wrapped lines go up/down to next row, rather than next line
 nnoremap <silent> j gj
@@ -140,8 +160,9 @@ nnoremap L $
 "Make searches appear in centre of page
 nnoremap n nzz
 nnoremap N Nzz
-" Clears last Search highlight
-nnoremap <CR> :noh<CR>
+
+" Clears last Search highlight - unneeded - using vimcool for this
+"nnoremap <CR> :noh<CR>
 
 " Moving between Splits / Windows
 nnoremap <M-h> <C-w>h
@@ -160,7 +181,11 @@ inoremap <M-l> <Esc><C-w>
 nnoremap <silent> <c-n> :bn<CR>
 nnoremap <silent> <c-p> :bp<CR>
 
-
+" Enhanced increase/decrease numbers
+nnoremap <silent>         <C-a> :<C-u>call util#addSubtract("\<C-a>", '')<CR>
+nnoremap <silent> <Leader><C-a> :<C-u>call util#addSubtract("\<C-a>", 'b')<CR>
+nnoremap <silent>         <C-x> :<C-u>call util#addSubtract("\<C-x>", '')<CR>
+nnoremap <silent> <Leader><C-x> :<C-u>call util#addSubtract("\<C-x>", 'b')<CR>
 
 " Make Shift and Insert work in insert mode:
 inoremap <silent> <S-Insert> <C-R>+
@@ -181,7 +206,6 @@ nmap <Leader>? <plug>(fzf-maps-n)
 
 "{{ coc.nvim
 
-"""
 " Map <tab> for trigger + completion confirm, snippet expand + jump like VSCode
 "inoremap <silent><expr> <TAB>
 "	  \ pumvisible() ? coc#_select_confirm() :
@@ -189,7 +213,18 @@ nmap <Leader>? <plug>(fzf-maps-n)
 "	  \ <SID>check_back_space() ? "\<TAB>" :
 "	  \ coc#refresh()
 
-"""
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+
+" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+" nmap <silent> <TAB> <Plug>(coc-range-select)
+" xmap <silent> <TAB> <Plug>(coc-range-select)
+" xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
+
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -208,6 +243,12 @@ xmap <silent> <C-d> <Plug>(coc-cursors-range)
 
 let g:coc_snippet_next = '<tab>'
 
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -251,11 +292,11 @@ nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 
 
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+ "Do default action for next item.
+ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
@@ -265,6 +306,8 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 nnoremap <silent> <leader>a :ArgWrap<CR>
 "}}
 
+"{{ NERDCommmenter
+"}}
 
 "{{ WhichKey
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>

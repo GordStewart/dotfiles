@@ -56,6 +56,7 @@ alias s='sudo '
 alias spac='sudo pacman -Syu '
 alias sup='sudo apt update && sudo apt upgrade'
 
+
 # "ignored" aliases, not expanded
 
 ialias cp="cp -iv"                                                # Confirm before overwriting something
@@ -71,6 +72,8 @@ ialias exa='exa --group-directories-first'
 ialias lt='exa -T'
 ialias lt2='exa --tree --level=2'
 ialias lt3='exa --tree --level=3'
+ialias chmod="chmod -v"
+
 # Pretty print the path
 ialias path='echo $PATH | tr -s ":" "\n"'
 
@@ -90,8 +93,7 @@ alias free='free -m'   # Show sizes in MB
 alias -s {pdf,PDF}='background zathura'
 
 alias aliases='nvim ~/.oh-my-zsh/custom/aliases.zsh'
-# alias vimkeys='nvim ~/dotfiles/vim/keys.vim'
-# alias vimsettings='nvim ~/dotfiles/vim/settings.vim'
+alias exports='nvim ~/.oh-my-zsh/custom/exports.zsh'
 
 # Shows top 10 commands used from history using "commands" function
 alias topten="history | commands | sort -rn | head"
@@ -102,3 +104,5 @@ alias gll='fzf_git_log'   # fzf git log fzf_functions.sh
 
 # Git aliases
 ialias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias dc='docker-compose '

@@ -13,7 +13,11 @@ bindkey "^Os" sudo-command-line  # Also Esc-Esc
 
 bindkey "^h" run-help
 
-# alt and . 
+
+autoload smart-insert-last-word
+zle -N insert-last-word smart-insert-last-word
+zstyle :insert-last-word match '*([^[:space:]][[:alpha:]/\\]|[[:alpha:]/\\][^[:space:]])*'
+# alt and .
 bindkey "\e." insert-last-word
 #alt and =
 bindkey "\e=" copy-prev-shell-word
@@ -34,4 +38,4 @@ function _parent-list-contents {
 }
 
 # zle -N _parent-list-contents
-# bindkey '^[[1;3A' _parent-list-contents 
+# bindkey '^[[1;3A' _parent-list-contents

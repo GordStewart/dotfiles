@@ -11,9 +11,12 @@ set showcmd               " Show partial commands in status line and Selected ch
 set title                 " show file in titlebar
 set noshowmode            " hides --INSERT--, etc
 set complete-=i           " Exclude files completion
-set ruler
+"
+" Line Numbers
 set number
 set relativenumber
+
+set ruler
 set laststatus=2          " Always show status line
 set pumheight=20          " Height of Pop-Up-Menu in lines
 set shortmess=atOI        " No help Uganda information, and overwrite read messages to avoid PRESS ENTER prompts
@@ -123,6 +126,10 @@ augroup AutocmdGroup
   " Unset paste on InsertLeave
   au InsertLeave * silent! set nopaste
 
+  " Relative numbers off in Insert mode
+  autocmd InsertEnter * :set norelativenumber
+  autocmd InsertLeave * :set relativenumber
+
   " SaveBuffer
   autocmd BufWrite *.py call CocAction('format')
   autocmd BufWrite * call util#autoSave()
@@ -161,6 +168,15 @@ augroup AutocmdGroup
 
 augroup END
 
+" coc.nvim
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json,html,htmldjango setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
 " Make system clipboard accessible usin wsl
 if system('uname -r') =~ "Microsoft"
 " if has('wsl') =~ "Microsoft"
@@ -169,6 +185,12 @@ if system('uname -r') =~ "Microsoft"
     autocmd TextYankPost * :call system('clip.exe ',@")
   augroup END
 endif
+
+"augroup TooLong
+"    autocmd!
+"    autocmd winEnter,BufEnter * call clearmatches() | call matchadd('ColorColumn', '\%>80v', 100)
+"augroup END
+
 "}
 
 "{ Plugin Options
@@ -302,6 +324,7 @@ endif
 
 "{{ Vista
 
+let g:airline_powerline_fonts = 1
 let g:vista_default_executive = 'ctags'
 let g:vista_executive_for = {
   	\ 'vim': 'coc',
@@ -309,9 +332,10 @@ let g:vista_executive_for = {
   	\ }
 let g:vista_sidebar_width=35
 let g:vista_echo_cursor_strategy = 'echo'
-" let g:vista#renderer#icons=1
 let g:vista_fzf_preview = ['right:50%']
 let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
+let g:vista_close_on_jump = 1
+let g:vista#renderer#enable_icon = 1
 "}}
 
 "{{ Asyncrun
@@ -359,6 +383,7 @@ let g:coc_explorer_global_presets = {
 
 "{{ Semshi
 let g:semshi#error_sign = 0
+let g:semshi#always_update_all_highlights = v:true
 "}}
 
 "{{ Echodoc
@@ -393,17 +418,14 @@ let g:which_key_use_floating_win = 1
 let g:which_key_display_names = {'<CR>': '↵', '<TAB>': '⇆'}
 let g:which_key_floating_relative_win = 1
 call which_key#register('<Space>', "g:which_key_map")
-call which_key#register("[", "g:unimpaired_key_map")
-" call which_key#register(']', "g:unimpaired_key_map")
 
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader>      :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-nnoremap <silent> [             :<c-u>WhichKey '['<CR>
+"nnoremap <silent> [             :<c-u>WhichKey '['<CR>
 
 " Define prefix dictionary
 let g:which_key_map =  {}
-let g:unimpaired_key_map =  {}
 
 " Second level dictionaries:
 " 'name' is a special field. It will define the name of the group, e.g., leader-f is the "+file" group.
@@ -414,20 +436,44 @@ let g:unimpaired_key_map =  {}
 " =======================================================
 " You can pass a descriptive text to an existing mapping.
 let g:which_key_map.b = {
-    \ 'name' : '+buffers',
+    \ 'name' : 'buffers',
     \ 'b' : 'Fuzzy buffers',
     \ 'd' : 'delete current buffer',
     \ 'n' : 'next buffer',
     \ 'p' : 'previous buffer',
     \ 'h' : 'home (Startify)',
+    \ 'Y' : 'Copy whole buffer to clipboard',
+    \ }
+
+let g:which_key_map.c = {
+    \ 'name' : 'Comment',
+    \ 'Space' : 'Toggle comment (via topmost line)',
+    \ 'c' : 'Comment out',
+    \ 'i' : 'Invert Comment',
+    \ 'u' : 'Uncomment',
+    \ 'y' : 'Yank, then Comment',
+    \ 'A' : 'Comment, then insert at end of line',
     \ }
 
 let g:which_key_map.f = {
-    \ 'name' : '+file',
-    \ 's' : 'update',
+    \ 'name' : 'File',
+    \ 's' : 'Save current file',
+    \ 'S' : 'Save all files',
     \ '?' : 'Files in current directory',
     \ 'f' : 'Files in home directory',
     \ 'R' : 'Reloads nvim config',
+    \ }
+
+let g:which_key_map.g = {
+    \ 'p' : 'select last paste',
+    \ }
+
+let g:which_key_map.j = {
+    \ 'name': 'Jumping & Joining',
+    \ '0': 'Jump to beginning of line + set mark at previous location',
+    \ '$': 'Jump to end of line + set mark at previous location',
+    \ 'b': 'Jump backwards <-',
+    \ 'f': 'Jump forwards ->',
     \ }
 
 let g:which_key_map.l = {
@@ -452,7 +498,7 @@ let g:which_key_map.Q = {
 
 
 let g:which_key_map.t = {
-    \ 'name': 'toggle',
+    \ 'name': 'Toggle',
     \ 'i': 'indent lines',
     \ 'n': 'line numbers',
     \ 'r': 'relative line numbers',
@@ -484,21 +530,6 @@ let g:which_key_map.w = {
     \ 'J': 'Move Window to bottom',
     \ }
 
-let g:unimpaired_key_map = {
-    \ 'name': 'Unimpaired',
-    \ '<Space>': 'Insert Space Above',
-    \ 'e': 'move line up',
-    \ 'b': 'previous buffer',
-    \ 'B': 'first buffer',
-    \ 'l': 'previous error',
-    \ 'w': 'previous window',
-    \}
-
-" let g:unimpaired_key_map.b = {
-"     \ 'name': 'Unimpaired',
-"     \ '<Space>': 'Insert Space Below',
-"     \ }
-
 "}}
 
 "{{ vim-clap
@@ -522,17 +553,38 @@ let g:gitgutter_sign_modified_removed = '∙'
 ""}}
 
 "{{ ALE
+let g:ale_python_pylint_options = '--load-plugins pylint_django'
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lsp_show_message_severity = 'information'
 let g:ale_set_highlights = 1
 let g:ale_sign_warning = ""
 let g:ale_sign_error = ''
 let g:ale_sign_info = ''
+let g:ale_fix_on_save = 1
 highlight link ALEWarningSign Special
 highlight link ALEErrorSign Function
 highlight link ALEInfoSign Number
 "}}
+
+"{{ Peekaboo
+let g:peekaboo_window="call util#createCenteredFloatingWindow()"
+"}}
+
+"{{ indentLine
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+"}}
+
+"{{ nerdcommenter
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_htmldjango = 1
+"let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+"}}
+
 " End Plugin Options
 "}
-
 
 "{ Functions
 

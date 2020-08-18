@@ -1,13 +1,14 @@
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
 " Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'wellle/targets.vim'
+
+Plug 'preservim/nerdcommenter'
 
 Plug 'FooSoft/vim-argwrap'
 Plug 'alvan/vim-closetag'
@@ -21,6 +22,7 @@ Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'honza/vim-snippets'
 
 Plug 'voldikss/vim-floaterm'
+Plug 'romainl/vim-cool'
 
 " Python
 Plug 'tmhedberg/SimpylFold'
@@ -37,21 +39,18 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/goyo.vim'
 
-
 Plug 'airblade/vim-gitgutter'
 
 Plug 'Yggdroot/indentLine'
 
+" Colour Schemes
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'rakr/vim-one'
-Plug 'sainnhe/edge'
 Plug 'mhartington/oceanic-next'
-Plug 'liuchengxu/space-vim-theme'
 Plug 'nightsense/cosmic_latte'
-" Plug 'ayu-theme/ayu-vim'
-" Plug 'romainl/flattened'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'ryanoasis/vim-devicons'
+
 Plug 'itchyny/lightline.vim'
-" Plug 'liuchengxu/eleline.vim'
 
 call plug#end()

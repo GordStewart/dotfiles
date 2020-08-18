@@ -31,11 +31,18 @@
       "html",
       "markdown"
     ],
+    // Source
     "coc.source.file.priority": 10,
     "coc.source.around.priority": 8,
     "coc.source.tag.priority": 5,
-    "yank.priority": 4,
     "coc.source.buffer.priority": 7,
+
+    // coc-yank
+    // "yank.priority": 4,
+    "yank.priority": 10,
+    "yank.highlight.duration": 200,
+    "yank.limit": 2,
+    "yank.list.maxsize": 100,
 
     // Suggestions
     "suggest.triggerAfterInsertEnter": false,
@@ -73,7 +80,6 @@
     },
 
     // diagnostic
-
     "diagnostic.signOffset": 9999999,
     "diagnostic.errorSign": "✘",
     "diagnostic.warningSign": "",
@@ -103,6 +109,8 @@
     "explorer.file.column.indent.indentLine": true,
     "explorer.position": "left",
     "explorer.file.showHiddenFiles": true,
+    "explorer.floating.width": -20,
+    "explorer.floating.height": -10,
     "explorer.keyMappings": {
 
         "h" : "gotoParent",
