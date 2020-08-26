@@ -1,4 +1,5 @@
-"{ General Options
+" {{{1 General Options
+
 syntax on                 " Syntax Highlighting
 set termguicolors
 set hidden                " Allow buffer switching without saving
@@ -7,34 +8,61 @@ set mousehide             " Hide the mouse cursor while typing
 filetype plugin indent on " Automatically detect file types
 set encoding=utf-8        " Set default encoding
 set nowrap                " Do not wrap long lines
-set showcmd               " Show partial commands in status line and Selected characters/lines in visual mode
+set noshowcmd               " Show partial commands in status line & Selected characters/lines in visual mode
 set title                 " show file in titlebar
 set noshowmode            " hides --INSERT--, etc
 set complete-=i           " Exclude files completion
-"
+set complete+=k            " Include the dictionary completion source
+
+set lazyredraw              " Don't redraw screen when playing macros, etc
+
+" Parens Matching
+set showmatch               " Bounce to matching parens when inserted
+set matchtime=3             " Time for showmatch (tenths of seconds. default=5)
+
 " Line Numbers
 set number
 set relativenumber
 
 set ruler
 set laststatus=2          " Always show status line
-set pumheight=20          " Height of Pop-Up-Menu in lines
-set shortmess=atOI        " No help Uganda information, and overwrite read messages to avoid PRESS ENTER prompts
+
+" Folding
+set foldcolumn=1          " Need to check if works with gitgutter
+" What should trigger automatic fold opening?:
+set foldopen-=block
+set foldopen-=hor
+set foldopen+=jump
+
+set shortmess+=A                      " ignore annoying swapfile messages
+set shortmess+=I                      " no splash screen
+set shortmess+=O                      " file-read message overwrites previous
+set shortmess+=T                      " truncate non-file messages in middle
+set shortmess+=W                      " don't echo "[w]"/"[written]" when writing
+set shortmess+=a                      " use abbreviations in messages eg. `[RO]` instead of `[readonly]`
+set shortmess+=o                      " overwrite file-written messages
+set shortmess+=t                      " truncate file messages at start
+set shortmess+=c                      " don't give |ins-completion-menu| messages. [from coc.nvim]
+
 set timeoutlen=500
 
 " Dictionary
-set dictionary=/usr/share/dict/words
+set dictionary=/usr/share/dict/words   " Sudo apt install wbritish
 
 " text settings
 set textwidth=80   "  Auto wrap comments at 80 characters
 set display+=lastline           " Show as much as possible of the last line"
+
+" Show invis chars when :list is used
 set listchars+=tab:▸\ ,trail:·,precedes:←,extends:→,eol:↲,nbsp:␣
+set showbreak=↳                   "Char to show when :wrapping text
+set linebreak                     " Don't break mid-word when using :wrap
 
 " navigation
 set backspace=indent,eol,start " Backspace for dummies
 set cursorline
-set scrolloff=4
-set sidescroll=5
+set scrolloff=5     " minimum number of lines above & below cursor
+set sidescroll=3
 set sidescrolloff=5
 
 " Tabs
@@ -47,13 +75,13 @@ set smartindent     " Automatically inserts indentation in some cases
 set autoindent      " Indent at the same level of the previous line
 set breakindent
 set breakindentopt=shift:2
-set showbreak=↳
 
 " Search
-set infercase
+set ignorecase      " Ignore case in search patterns & tags files
 set smartcase       "if search has uppercase then use case sensitive search
 set incsearch       " Highlight dynamically as pattern is typed"
 set hlsearch        "hilight searches by default
+set tagcase=followscs   " Follows smartcase & ignorecase when searching tags
 
 " Splits
 "More natural split opening
@@ -62,24 +90,46 @@ set splitright    " Puts new vsplit windows to the right of the current
 
 " Completion
 set wildmenu " Show list instead of just completing
-" set wildmode=longest,list,full
-set wildmode=list:longest,full
+set wildmode=longest:full,list:full,full
 set wildignore+=*.pyc,*.png,*.jpg,*.gif,*.zip
 
+" PopUpMenu
+set pumblend=10           " PopUpMenu transparency [0-30 works best]
+set pumheight=25          " Height of Pop-Up-Menu in lines
+
+" Insert-Completion
+set completeopt+=menuone       " Use pum when only one match (for context info)
+set completeopt+=noinsert      " Only insert item when picked from menu
+set completeopt+=preview      " Show extra information
+set infercase                  " Adjust case depending on typed text
 
 set clipboard+=unnamedplus
 
 " backup/swap/undo
-" Some language servers have issues with backup files, see #649
+" Some language servers have issues with backup files, see #648
 set nobackup
 set nowritebackup
+
+set undodir=/home/gordon/.config/nvim/tmp/undo/
+set undodir+=.
 set undofile
+
+set directory=/home/gordon/.config/nvim/tmp/swap//
+set directory+=.
 set swapfile
 
-" Don't create comment when pressing enter after commented line
-" autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
-set formatoptions-=cro
-set formatoptions+=j   " Delete comment character when joining commented lines
+set shada=!,'100,<500,:10000,/10000,s10,h
+set shadafile=/home/gordon/.config/nvim/tmp/main.shada
+
+" Don't: autowrap comments [c], auto-insert comment leader after <Enter> in insert [r], or <o> in Normal [0]
+set formatoptions-=o
+set formatoptions-=r
+set formatoptions-=c
+set formatoptions+=n          " Smart auto-indent on numbered lists
+set formatoptions+=1          " Don't break a line after a 1 letter word
+
+set visualbell
+
 " Better display for messages
 set cmdheight=2
 
@@ -90,8 +140,6 @@ set updatetime=100
 set autoread      " Automatically re-read a file changed outside of vim
 set history=10000   "increase history from default (20) to 10000
 set path+=**       " provides tab-completion for all file-related tasks (Search down into subfolders)
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
 
 " always show signcolumns
 set signcolumn=yes
@@ -106,18 +154,19 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
+set fillchars=stl:\ ,stlnc:\ ,vert:│,fold:\ ,diff:-
+
 " python-syntax
 let g:python_highlight_all=1
 
 let g:markdown_fenced_languages = ['html', 'python', 'vim', 'help']
-"}
 
 " Status line
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
 endfunction
 
-"{ Autocommands
+" {{{1 Autocommands
 
 augroup AutocmdGroup
   autocmd BufNewFile *.gitignore 0r ~/.config/nvim/templates/=template=.gitignore
@@ -130,10 +179,6 @@ augroup AutocmdGroup
   autocmd InsertEnter * :set norelativenumber
   autocmd InsertLeave * :set relativenumber
 
-  " SaveBuffer
-  autocmd BufWrite *.py call CocAction('format')
-  autocmd BufWrite * call util#autoSave()
-
   " AutoChdir
   " autocmd BufEnter * silent! lcd %:p:h
 
@@ -141,10 +186,9 @@ augroup AutocmdGroup
   autocmd VimResized * exec "normal \<C-w>="
 
   " LastPosition
-  autocmd BufReadPost *
+  autocmd BufReadPost,BufWinEnter *
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
-      \ exe "normal! g'\"" |
-    \ endif
+    \ exe "normal! g'\"" | execute 'silent! ' . line("'\"") . 'foldopen!' | endif
 
   " KeywordHighlight
   autocmd Syntax *
@@ -153,19 +197,24 @@ augroup AutocmdGroup
     \ call matchadd('Debug', '\W\zs\(Debug\|DEBUG\)') |
 
   " ParenthesisColor:
-  autocmd VimEnter,BufWinEnter *
-    \ if index(['html', 'htmldjango', 'tex', 'mma'], &filetype) < 0 |
-      \ syntax match paren1 /[{}]/   | hi paren1 guifg=#FF00FF |
-      \ syntax match paren2 /[()]/   | hi paren2 guifg=#DF8700 |
-      \ syntax match paren3 /[<>]/   | hi paren3 guifg=#0087FF |
-      \ syntax match paren4 /[\[\]]/ | hi paren4 guifg=#00FF5F |
-    \ endif
-
+  "autocmd VimEnter,BufWinEnter *
+    "\ if index(['html', 'htmldjango', 'tex', 'mma'], &filetype) < 0 |
+      "\ syntax match paren1 /[{}]/   | hi paren1 guifg=#FF00FF |
+      "\ syntax match paren2 /[()]/   | hi paren2 guifg=#DF8700 |
+      "\ syntax match paren3 /[<>]/   | hi paren3 guifg=#0087FF |
+      "\ syntax match paren4 /[\[\]]/ | hi paren4 guifg=#00FF5F |
+    "\ endif
 
   "Vista fzf search with /
   autocmd FileType vista,vista_kind
     \ nnoremap <buffer> <silent> / :<c-u>call vista#finder#fzf#Run()<CR>
 
+augroup END
+
+augroup MyColors
+  " Clears / changes certain syntax highlights any time a colorscheme is sourced
+  autocmd!
+  autocmd ColorScheme * call MyHighlights()
 augroup END
 
 " coc.nvim
@@ -177,118 +226,24 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Make system clipboard accessible usin wsl
+" WSL yank support v2
 if system('uname -r') =~ "Microsoft"
-" if has('wsl') =~ "Microsoft"
-  augroup Yank
-    autocmd!
-    autocmd TextYankPost * :call system('clip.exe ',@")
-  augroup END
+  let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+  if executable(s:clip)
+      augroup WSLYank
+          autocmd!
+          autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+      augroup END
+  endif
 endif
-
 "augroup TooLong
 "    autocmd!
 "    autocmd winEnter,BufEnter * call clearmatches() | call matchadd('ColorColumn', '\%>80v', 100)
 "augroup END
 
-"}
+" {{{1 Plugin Options
 
-"{ Plugin Options
-
-"{{ Lightline
-" let g:lightline.tabline_separator = { 'left': "\ue0bc", 'right': "\ue0ba" }
-" let g:lightline.tabline_subseparator = { 'left': "\ue0bb", 'right': "\ue0bb" }
-
-let g:lightline = {
-      \ 'mode_map': {
-        \ 'n' : 'N',
-        \ 'i' : 'I',
-        \ 'R' : 'R',
-        \ 'v' : 'V',
-        \ 'V' : 'VL',
-        \ "\<C-v>": 'VB',
-        \ 'c' : 'C',
-        \ 's' : 'S',
-        \ 'S' : 'SL',
-        \ "\<C-s>": 'SB',
-        \ 't': 'T',
-        \ },
-        \ 'colorscheme': 'cosmic_latte_dark',
-      \ }
-
-let g:lightline.separator = { 'left': "\ue0b0", 'right': "\ue0b2" }
-let g:lightline.subseparator = { 'left': "\ue0b1", 'right': "\ue0b3" }
-
-" function! coc#status()
-"   let info = get(b:, 'coc_diagnostic_info', {})
-"   let msgs = []
-"   if get(info, 'error', 0)
-"     call add(msgs, s:error_sign . info['error'])
-"   endif
-"   if get(info, 'warning', 0)
-"     call add(msgs, s:warning_sign . info['warning'])
-"   endif
-"   return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
-" endfunction'
-
-function! LightLineCoc()
-  if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
-    return ''
-  endif
-  return trim(util#lightline#cocStatus())
-endfunction
-
-let g:lightline.component = {
-            \ 'percent': '%2p%%',
-            \ 'lineinfo': '%2p%% %3l:%-2v ',
-            \ 'vim_logo': "\ue7c5",
-            \ 'bufnum': '%n',
-            \ 'winnr': '%{winnr()}'
-            \ }
-
-let g:lightline.component_function = {
-      \   'cocstatus': 'LightLineCoc',
-      \   'mode': 'util#lightline#mode',
-      \   'readonly': 'util#lightline#readOnly',
-      \   'filename': 'util#lightline#fileName',
-      \   'fileformat': 'util#lightline#fileFormat',
-      \   'fileencoding': 'util#lightline#fileEncoding',
-      \   'filetype': 'util#lightline#fileType',
-      \   'absolutepath': 'util#lightline#absPath',
-      \   'gitbranch': 'util#lightline#GitBranch',
-      \ }
-
-let g:lightline.component_expand = {
-      \ 'linter_warnings': 'util#lightline#LinterWarnings',
-      \ 'linter_errors': 'util#lightline#LinterErrors',
-      \ 'linter_ok': 'util#lightline#LinterOK',
-      \ }
-
-let g:lightline.component_type = {
-      \ 'readonly': 'error',
-      \ 'linter_errors': 'error',
-      \ 'linter_warnings': 'warning',
-      \ }
-
-let g:lightline.active = {
-            \ 'left': [ [ 'winnr', 'mode', 'paste' ],
-            \           [ 'gitbranch', 'readonly', 'filename', 'cocstatus'] ],
-            \ 'right': [ [ 'filetype', 'lineinfo' ],
-            \            [ 'fileformat' ], ['linter_warnings', 'linter_errors', 'linter_ok'] ]
-            \ }
-
-let g:lightline.inactive = {
-            \ 'left': [ [ 'winnr', 'filename']],
-            \ 'right': [ [ 'lineinfo' ],
-            \ ['filetype', 'fileformat' ] ]
-            \ }
-
-" Use autocmd to force lightline update.
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-"}}
-
-"{{ FZF
+" {{{2 FZF
 
 let g:fzf_files_options = '--reverse --preview "bat --color always --style numbers {}"'
 
@@ -320,9 +275,7 @@ if has('nvim')
   let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 endif
 
-"}}
-
-"{{ Vista
+" {{{2 Vista
 
 let g:airline_powerline_fonts = 1
 let g:vista_default_executive = 'ctags'
@@ -336,13 +289,9 @@ let g:vista_fzf_preview = ['right:50%']
 let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
 let g:vista_close_on_jump = 1
 let g:vista#renderer#enable_icon = 1
-"}}
+" {{{2 coc + extensions
 
-"{{ Asyncrun
-let g:asyncrun_open = 8
-"}}
 
-"{{ coc + extensions
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " Use `:Format` to format current buffer
@@ -354,7 +303,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-"{{{ coc-explorer
+" {{{3 coc-explorer
 let g:coc_explorer_global_presets = {
     \   '.vim': {
     \      'root-uri': '~/.config/nvim',
@@ -376,22 +325,16 @@ let g:coc_explorer_global_presets = {
     \     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
     \   }
     \ }
-"}}}
 
-"}}
-
-
-"{{ Semshi
+" {{{2 Semshi
 let g:semshi#error_sign = 0
 let g:semshi#always_update_all_highlights = v:true
-"}}
 
-"{{ Echodoc
+" {{{2 Echodoc
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'floating'
-"}}
 
-"{{ Startify
+" {{{2 Startify
 let g:startify_custom_header = []
 let g:startify_lists = [
         \ { 'type': 'sessions',  'header': [" \ue62e Sessions"]       },
@@ -402,16 +345,22 @@ let g:startify_lists = [
         \ ]
 
 let g:startify_bookmarks = [
-  \  {'c': '~/.config/nvim/init.vim'}]
+  \  {'c': '~/.config/nvim/init.vim'}, '~/.zshrc', '~/.tmux.conf']
 
 let g:startify_commands = [
-  \  ':FZF ~/dotfiles/zsh',
-  \  ':FZF ~/dotfiles/zsh',
+  \  ':FZF ~/.oh-my-zsh/custom/',
   \  ':FZF ~/.config/nvim/',
-  \  ':FZF ~/dotfiles/scripts']
-"}}
+  \ ]
 
-"{{ WhichKey
+let g:startify_use_env = 0          " Show environment variable if shorter
+let g:startify_update_oldfiles = 1  " Update v:oldfiles on the fly
+let g:startify_skiplist = [
+            \ '^/tmp',
+            \ ]
+highlight StartifySlash guifg=#56b6c2
+
+
+" {{{2 WhichKey
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
 let g:which_key_use_floating_win = 1
@@ -499,7 +448,8 @@ let g:which_key_map.Q = {
 
 let g:which_key_map.t = {
     \ 'name': 'Toggle',
-    \ 'i': 'indent lines',
+    \ 'i': 'indentation lines',
+    \ 'l': ':list mode [show tabs, trailing spaces, etc]',
     \ 'n': 'line numbers',
     \ 'r': 'relative line numbers',
     \ 'c': 'conceal level',
@@ -530,151 +480,96 @@ let g:which_key_map.w = {
     \ 'J': 'Move Window to bottom',
     \ }
 
-"}}
-
-"{{ vim-clap
+" {{{2 vim-clap
 let g:clap_layout = { 'relative': 'editor' }
 let g:clap_theme = 'material_design_dark'
-"}}
 
-"{{ Asyncrun
+" {{{2 Asyncrun
+let g:asyncrun_open = 8
 " Opens window automatically when text adds to it
 augroup vimrc
     autocmd QuickFixCmdPost * call asyncrun#quickfix_toggle(8, 1)
 augroup END
-"}}
 
-
-"{{ GitGutter
+" {{{2 GitGutter
 let g:gitgutter_sign_added = '▌'
 let g:gitgutter_sign_modified = '▌'
 let g:gitgutter_sign_removed = '▌'
 let g:gitgutter_sign_modified_removed = '∙'
-""}}
+let g:gitgutter_grep_command = executable('rg') ? 'rg' : 'grep'
 
-"{{ ALE
+" {{{2 ALE
 let g:ale_python_pylint_options = '--load-plugins pylint_django'
-let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
 let g:ale_lsp_show_message_severity = 'information'
+"let g:ale_virtualtext_cursor = 1
 let g:ale_set_highlights = 1
 let g:ale_sign_warning = ""
-let g:ale_sign_error = ''
+let g:ale_sign_error = ''
 let g:ale_sign_info = ''
 let g:ale_fix_on_save = 1
-highlight link ALEWarningSign Special
-highlight link ALEErrorSign Function
-highlight link ALEInfoSign Number
-"}}
+let g:ale_echo_msg_error_str='Error'
+let g:ale_echo_msg_info_str='Info'
+let g:ale_echo_msg_warning_str='Warning'
+let g:ale_echo_msg_format = '¦%severity%¦ %linter% % [code] % %s'
+let g:ale_fixers = {
+      \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
+      \}
 
-"{{ Peekaboo
+" {{{2 Peekaboo
 let g:peekaboo_window="call util#createCenteredFloatingWindow()"
-"}}
 
-"{{ indentLine
+" {{{2 indentLine
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-"}}
-
-"{{ nerdcommenter
+let g:indentLine_fileTypeExclude = ['markdown','text','help']
+" {{{2 nerdcommenter
 " Use compact syntax for prettified multi-line comments
 let g:NERDCompactSexyComs = 1
 " Set a language to use its alternate delimiters by default
 let g:NERDAltDelims_htmldjango = 1
 "let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
-"}}
 
-" End Plugin Options
-"}
+" {{{2 Crease
+set fillchars=fold:\ " space
+let g:crease_foldtext = { 'default': '+-%{repeat("-", v:foldlevel)} %l lines: %t ' }
 
-"{ Functions
+" {{{2 vim-auto-save
+let g:auto_save=1                     " enable Autosave on Nvim startup
+let g:auto_save_silent = 1  " do not display the auto-save notification
 
-"{{ Folding
-
-" For vim files only
-function! VimFolds(lnum)
-    " get content of current line and the line below
-    let l:cur_line = getline(a:lnum)
-    let l:next_line = getline(a:lnum+1)
-
-    if l:cur_line =~# '^"{'
-        return '>' . (matchend(l:cur_line, '"{*') - 1)
-    else
-        if l:cur_line ==# '' && (matchend(l:next_line, '"{*') - 1) == 1
-            return 0
-        else
-            return '='
-        endif
-    endif
+" {{{2 Goyo
+function! s:goyo_enter() abort
+  "Limelight
+  if exists('$TMUX')
+    silent !tmux set -g status off
+    "silent !tmux set -g pane-border-status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  set scrolloff=999
 endfunction
 
-function! MyFoldText()
-    let line = getline(v:foldstart)
-    let folded_line_num = v:foldend - v:foldstart
-    let line_text = substitute(line, '^"{\+', '', 'g')
-    let fillcharcount = &textwidth - len(line_text) - len(folded_line_num)
-    return '+'. repeat('-', 4) . line_text . repeat('.', fillcharcount) . ' (' . folded_line_num . ' L)'
+function! s:goyo_leave() abort
+  "Limelight!
+  if exists('$TMUX')
+    silent !tmux set -g status on
+    "silent !tmux set -g pane-border-status top
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+  set scrolloff=5
 endfunction
 
-"set foldmethod=expr
-"set foldexpr=VimFolds(v:lnum)
-"set foldtext=MyFoldText()
-""Note that there is a <space> character after the slash
-"set fillchars=fold:
+augroup MyGoyo
+  autocmd!
+  autocmd User GoyoEnter call <SID>goyo_enter()
+  autocmd User GoyoLeave call <SID>goyo_leave()
+augroup END
 
 
-" Customized version of folded text, idea by
-" http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
-fu! CustomFoldText(string) "{{{1
-    "get first non-blank line
-    let fs = v:foldstart
-    while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
-    endwhile
-    if fs > v:foldend
-        let line = getline(v:foldstart)
-    else
-        let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
-    endif
-    let pat  = matchstr(&l:cms, '^\V\.\{-}\ze%s\m')
-    " remove leading comments from line
-    let line = substitute(line, '^\s*'.pat.'\s*', '', '')
-    " remove foldmarker from line
-    let pat  = '\%('. pat. '\)\?\s*'. split(&l:fmr, ',')[0]. '\s*\d\+'
-    let line = substitute(line, pat, '', '')
+" {{{1 Functions
 
-"   let line = substitute(line, matchstr(&l:cms,
-"	    \ '^.\{-}\ze%s').'\?\s*'. split(&l:fmr,',')[0].'\s*\d\+', '', '')
-
-    if get(g:, 'custom_foldtext_max_width', 0)
-	let w = g:custom_foldtext_max_width - &foldcolumn - (&number ? 8 : 0)
-    else
-	let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-    endif
-    let foldSize = 1 + v:foldend - v:foldstart
-    let foldSizeStr = " " . foldSize . " lines "
-    let foldLevelStr = '+'. v:folddashes
-    let lineCount = line("$")
-    if has("float")
-	try
-	    let foldPercentage = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
-	catch /^Vim\%((\a\+)\)\=:E806/	" E806: Using Float as String
-	    let foldPercentage = printf("[of %d lines] ", lineCount)
-	endtry
-    endif
-    if exists("*strwdith")
-	let expansionString = repeat(a:string, w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
-    else
-	let expansionString = repeat(a:string, w - strlen(substitute(foldSizeStr.line.foldLevelStr.foldPercentage, '.', 'x', 'g')))
-    endif
-    return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
-endf
-
-let g:custom_foldtext_max_width=79
-set foldtext=CustomFoldText('.')
-set fillchars=stl:\ ,stlnc:\ ,vert:│,fold:\ ,diff:-
-
-"}}
-
-"{{ Text Manipulation
+" {{{2 Text Manipulation
 function! TwiddleCase(str)
   if a:str ==# toupper(a:str)
     let result = tolower(a:str)
@@ -686,9 +581,8 @@ function! TwiddleCase(str)
   return result
 endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
-"}}
 
-"{{ Toggles
+" {{{2 Toggles
 
 function! ToggleConceal()
   " 0=falsy, any other number = truthy
@@ -702,38 +596,11 @@ function! ToggleConceal()
   endif
 endfunction
 
-"}}
-function! ElelineError() abort
-  if exists('g:loaded_ale')
-    let s:ale_counts = ale#statusline#Count(bufnr(''))
-    return s:ale_counts[0] == 0 ? '' : '•'.s:ale_counts[0].' '
-  endif
-  return ''
-endfunction
+" {{{2 ColorScheme Highlight Overrides
 
-function! ElelineWarning() abort
-  if exists('g:loaded_ale')
-    " Ensure ElelineWarning() is called after ElelineError() so that s:ale_counts can be reused.
-    return s:ale_counts[1] == 0 ? '' : '•'.s:ale_counts[1].' '
-  endif
-  return ''
+function! MyHighlights() abort
+  " Called by an autocmd whenever a colorscheme is sourced; Fixes weird colours
+  highlight Normal guibg=None
+  highlight SignColumn guibg=None
+  highlight Folded guibg=None guifg=#5C6370
 endfunction
-
-function! s:def(fn) abort
-  return printf('%%#%s#%%{%s()}%%*', a:fn, a:fn)
-endfunction
-
-function! s:StatusLine() abort
-  let l:error = s:def('ElelineError')
-  let l:warning = s:def('ElelineWarning')
-  let l:common = l:error.l:warning
-  return l:common
-endfunction
-
-function! SetStatusLine(...) abort
-  " call ElelineGitBranch(1)
-  let &l:statusline = s:StatusLine()
-  " User-defined highlightings shoule be put after colorscheme command.
-  " call s:hi_statusline()
-endfunction
-"}

@@ -15,18 +15,18 @@ function! util#lightline#absPath()
   return path
 endfunction
 
-" LightlineMode:
-function! util#lightline#mode()
-  return &filetype ==# 'coc-explorer' ? 'coc-explorer' :
-    \ &filetype ==# 'help' ? 'Help' :
-    \ &filetype ==# 'man' ? 'Man' :
-    \ &filetype ==# 'qf' && !getwininfo(win_getid(winnr()))[0]['loclist'] ? 'QuickFix' :
-    \ &filetype ==# 'qf' && getwininfo(win_getid(winnr()))[0]['loclist'] ? 'Location List' :
-    \ &filetype ==# 'startify' ? 'Startify' :
-    \ &filetype ==# 'Mundo' ? 'Mundo' :
-    \ expand('%:t') =~ '__vista__' ? 'Vista' :
-    \ lightline#mode()
-endfunction
+ "LightlineMode:
+"function! util#lightline#mode()
+  "return &filetype ==# 'coc-explorer' ? 'coc-explorer' :
+    "\ &filetype ==# 'help' ? 'Help' :
+    "\ &filetype ==# 'man' ? 'Man' :
+    "\ &filetype ==# 'qf' && !getwininfo(win_getid(winnr()))[0]['loclist'] ? 'QuickFix' :
+    "\ &filetype ==# 'qf' && getwininfo(win_getid(winnr()))[0]['loclist'] ? 'Location List' :
+    "\ &filetype ==# 'startify' ? 'Startify' :
+    "\ &filetype ==# 'Mundo' ? 'Mundo' :
+    "\ expand('%:t') =~ '__vista__' ? 'Vista' :
+    "\ lightline#mode()
+"endfunction
 
 " LightlineFilename:
 function! util#lightline#fileName()

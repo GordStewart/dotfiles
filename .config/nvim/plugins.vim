@@ -8,22 +8,41 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'wellle/targets.vim'
 
+Plug 'andymass/vim-matchup'
+
+Plug 'scr1pt0r/crease.vim'
+
 Plug 'preservim/nerdcommenter'
 
-Plug 'FooSoft/vim-argwrap'
+"Plug 'FooSoft/vim-argwrap'
 Plug 'alvan/vim-closetag'
 Plug 'skywind3000/asyncrun.vim'
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+  \ 'coc-css',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-python',
+  \ 'coc-vimlsp',
+  \ 'coc-pairs',
+  \ 'coc-yank',
+  \ 'coc-highlight',
+  \ ]
+
 Plug 'Shougo/echodoc.vim'
 Plug 'liuchengxu/vista.vim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
+Plug '907th/vim-auto-save'
 Plug 'honza/vim-snippets'
 
 Plug 'voldikss/vim-floaterm'
 Plug 'romainl/vim-cool'
 
+
+Plug 'sheerun/vim-polyglot'
 " Python
 Plug 'tmhedberg/SimpylFold'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
@@ -44,13 +63,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'Yggdroot/indentLine'
 
 " Colour Schemes
-Plug 'danilo-augusto/vim-afterglow'
 Plug 'rakr/vim-one'
-Plug 'mhartington/oceanic-next'
-Plug 'nightsense/cosmic_latte'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+" Plug 'nightsense/cosmic_latte'
 Plug 'ryanoasis/vim-devicons'
-
-Plug 'itchyny/lightline.vim'
 
 call plug#end()

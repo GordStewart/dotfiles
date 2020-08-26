@@ -23,6 +23,8 @@ setopt rm_star_wait         # if `rm *` wait 10 seconds before performing it!
 
 # Completion Menu
 setopt auto_menu            # show completion menu on succesive tab press
+# use LS_COLORS colors in tab completion
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 
 setopt promptsubst
@@ -44,6 +46,9 @@ setopt hist_ignore_dups             # ignore duplication command history list
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_IGNORE_SPACE
+# Uncomment the following line to display red dots whilst waiting for completion.
+COMPLETION_WAITING_DOTS="true"
+
 HISTFILE=$HOME/.cache/zsh/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000

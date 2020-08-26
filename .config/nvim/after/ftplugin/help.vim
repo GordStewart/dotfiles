@@ -8,9 +8,11 @@ nmap <silent> <buffer> q :quit<CR>
 
 " open help file in the left window
 " alternative: e.g. vert help syntax
-" autocmd BufWinEnter <buffer> wincmd H
+autocmd BufWinEnter <buffer> wincmd H
 
 setlocal norelativenumber
 setlocal nonumber
 setlocal nospell
 setlocal foldmethod=indent
+" The Indentline plugin sets conceallevel to 2 by default
+setlocal conceallevel=0

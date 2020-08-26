@@ -1,0 +1,30 @@
+[user]
+	email = rotatedwrongs@gmail.com
+	name = Gordon Stewart
+;[core]
+	;excludesfile = /home/gordon/.gitignore_global
+	;pager = diff-so-fancy | less
+[init]
+	templatedir = ~/.git_template
+[color]
+	ui = true
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = red

@@ -43,8 +43,8 @@ nnoremap <leader>j0 m`^
 " Jump to end of line + set mark at previous location
 nnoremap <leader>j$ m`g_
 " Jump Backwards + Forward
-nnoremap <leader>jb <C-o>
-nnoremap <leader>jf <C-i>
+nnoremap <leader>jb <C-o>zz
+nnoremap <leader>jf <C-i>zz
 "}}
 
 "{{ LSP Functions [l]
@@ -62,6 +62,7 @@ nnoremap <silent> <Leader>lS  :<C-u>CocList -I symbols<cr>
 
 "{{ Toggle [t]
 nnoremap <leader>ti :IndentLinesToggle<CR>
+nnoremap <Leader>tl :set list!<CR>
 nnoremap <Leader>tn :set number!<CR>
 nnoremap <Leader>tr :set relativenumber!<CR>
 nnoremap <Leader>tgl :GitGutterLineHighlightsToggle<CR>
@@ -113,6 +114,7 @@ nmap <Leader>xim crm
 
 "{{ Function Keys
 
+nnoremap <F1> :Helptags
 set pastetoggle=<F3>
 
 nnoremap <F5> :MundoToggle<CR>
@@ -151,18 +153,27 @@ xnoremap <silent> k gk
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
+" When moving to the EOF, center the screen
+nnoremap G Gzz
+"Recenter when jumping back
+nnoremap <C-o> <C-o>zz
 " move to the start of line
 nnoremap H ^
 " move to the end of line
 nnoremap L $
+" Center screen after navigation shortcuts
+nnoremap } }zvzz
+nnoremap { {zvzz
+
+nnoremap ]] ]]zvzz
+nnoremap [[ [[zvzz
+nnoremap [] []zvzz
+nnoremap ][ ][zvzz
 
 " Search
 "Make searches appear in centre of page
 nnoremap n nzz
 nnoremap N Nzz
-
-" Clears last Search highlight - unneeded - using vimcool for this
-"nnoremap <CR> :noh<CR>
 
 " Moving between Splits / Windows
 nnoremap <M-h> <C-w>h
@@ -173,13 +184,6 @@ inoremap <M-h> <Esc><C-w>h
 inoremap <M-j> <Esc><C-w>j
 inoremap <M-k> <Esc><C-w>k
 inoremap <M-l> <Esc><C-w>
-
-" Swap buffers
-"nnoremap <silent> <c-p> :call Switch_Buffer('bprevious')<cr>
-"nnoremap <silent> <c-n> :call Switch_Buffer('bnext')<cr>
-" Use Tab to switch buffer
-nnoremap <silent> <c-n> :bn<CR>
-nnoremap <silent> <c-p> :bp<CR>
 
 " Enhanced increase/decrease numbers
 nnoremap <silent>         <C-a> :<C-u>call util#addSubtract("\<C-a>", '')<CR>
@@ -199,9 +203,6 @@ xnoremap <Leader>r "sy:%s/<C-r>s//<Left>
 nnoremap Y y$
 
 " FZF Keys
-" nnoremap <silent> <space>b :Buffers<CR>
-" nnoremap <silent> <space>f :Files<CR>
-" nnoremap <silent> <space>F :Files ~/<CR>
 nmap <Leader>? <plug>(fzf-maps-n)
 
 "{{ coc.nvim

@@ -6,6 +6,7 @@ PATH=${PATH}:/sbin
 PATH=${PATH}:"/usr/local/sbin"
 PATH=${PATH}:"/home/gordon/.dotfiles/bin"
 PATH=${PATH}:"/home/gordon/.local/bin"
+PATH=${PATH}:"/home/gordon/neovim/bin"
 PATH=${PATH}:"/mnt/c/Windows/System32"
 
 export -U PATH=${PATH}
@@ -51,18 +52,19 @@ fi
 export CHEAT_COLORS=true
 export CHEAT_COLORSCHEME=dark # light or dark
 
+FD_OPTIONS="--follow --hidden --exclude .git --exclude node_modules --color=always"
 # fzf , use fd as default find
-export FZF_DEFAULT_COMMAND='fd --type file --hidden --follow --color=always --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
-export FZF_ALT_C_COMMAND="fd --type d . "
-export FZF_DEFAULT_OPTS="--multi --reverse --ansi"
+export FZF_DEFAULT_COMMAND='git ls-files --cached --others --exclude-standard | fd --type f --type l $FD_OPTIONS'
+export FZF_DEFAULT_OPTS="--height 50% -1 --multi --reverse --info=inline --ansi --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | xclip -selection clipboard)'"
+export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
+#export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
+export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -100'"
 
 # Adding Folders to python path
 export PYTHONPATH="/mnt/c/Users/Gordon/Documents/Code/Python/scripts/"
 
-# python virtualenv + virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
+# python venv + virtualenvwrapper
+export WORKON_HOME=$HOME/.venvs
 export PROJECT_HOME=/mnt/c/Users/Gordon/Documents/Code/Python
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3

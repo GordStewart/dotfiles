@@ -1,3 +1,13 @@
+" Auto-install vim-plug
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" speeds up startup time if set
+let g:python3_host_prog = '/usr/bin/python3'
+
 " must be set to `1` before ALE is loaded.
 let g:ale_sign_highlight_linenrs = 1
 
@@ -11,17 +21,9 @@ let g:config_file_list = ['plugins.vim',
 for f in g:config_file_list
     execute 'source ' . g:nvim_config_root . '/' . f
 endfor
-" hi Error NONE
 
-" let g:one_allow_italics=1
-" colorscheme one
-" let g:afterglow_italic_comments=1
-" colorscheme afterglow
-" colorscheme OceanicNext
+let g:one_allow_italics=1
+colorscheme one
 set background=dark
 
-"let g:material_terminal_italics = 1
-"let g:material_theme_style = 'darker'
-"colorscheme material
-"Best so far:
-colorscheme cosmic_latte
+"colorscheme cosmic_latte

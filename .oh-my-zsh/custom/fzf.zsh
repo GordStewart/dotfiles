@@ -1,3 +1,37 @@
+# Enable fuzzy search key bindings & auto completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Use fd instead of the default find for fzf '**' shell completions.
+# - The first argument to the function ($1) is the base path to start traversal
+_fzf_compgen_path() {
+  command fd --hidden --follow --exclude .git --exclude node_modules . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  command fd --type d --hidden --follow --exclude .git --exclude node_modules . "$1"
+}
+
+# Use fd and fzf to get the args to a command.
+f() {
+    sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
+    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
+}
+
+# # Like f, but not recursive
+fm() f "$@" --max-depth 1
+
+
+# Fuzzy Git Add - Stage *Modified* Files
+# Selectively stage fuzzily found files for committing.
+# Note, only modified files will be listed for staging.
+config_add() {
+    local files=$(config ls-files --modified --exclude-standard | fzf --ansi)
+    if [[ -n $files ]]; then
+        config add --verbose $files
+    fi
+}
+
 # Fuzzy Git Add - Stage *Modified* Files
 # Selectively stage fuzzily found files for committing.
 # Note, only modified files will be listed for staging.
@@ -79,3 +113,11 @@ fzf_git_log() {
 }
 
 alias gll='fzf_git_log'
+
+# # Integration with z
+# # like normal z when used with arguments but displays an fzf prompt when used without.
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}

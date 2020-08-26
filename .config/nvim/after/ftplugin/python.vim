@@ -6,7 +6,7 @@ setlocal commentstring=#\ %s
 setlocal nospell
 
 let b:ale_linters = ['flake8', 'pylint']
-let b:ale_fixers = [
+let b:ale_fixers += [
 \   'isort',
 \   'yapf',
 \]

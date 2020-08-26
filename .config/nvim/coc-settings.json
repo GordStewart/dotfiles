@@ -1,7 +1,8 @@
 {
 "languageserver": {
   "vimls": {
-    "module": "/usr/lib/node_modules/vim-language-server/bin/index.js",
+    //"module": "$NVM_BIN/node_modules/vim-language-server/bin/index.js",
+    "module": "$NVM_BIN/vim-language-server",
     "args": ["--node-ipc"],
     "initializationOptions": {
       "iskeyword": "@,48-57,_,192-255,-#", // vim iskeyword option
@@ -38,9 +39,8 @@
     "coc.source.buffer.priority": 7,
 
     // coc-yank
-    // "yank.priority": 4,
-    "yank.priority": 10,
-    "yank.highlight.duration": 200,
+    "yank.priority": 90,
+    "yank.highlight.duration": 300,
     "yank.limit": 2,
     "yank.list.maxsize": 100,
 
