@@ -1,6 +1,6 @@
 
 setopt nobeep               # No Beeping
-setopt correct              # Enable Spellcheck
+setopt nocorrect            # Disable Spellcheck
 setopt NO_FLOW_CONTROL      # disable start/stop chars in shell editor (^S, ^Q)
 # Directories
 setopt AUTOPUSHD PUSHDMINUS PUSHDSILENT PUSHDTOHOME
@@ -11,6 +11,7 @@ setopt auto_param_slash     # if completed parameter is a directory, add a trail
 setopt path_dirs            # Can search subdirectory in $PATH
 
 setopt interactivecomments	# allow comments on cmd line.
+setopt completealiases
 
 # Globs
 setopt glob_complete
@@ -21,11 +22,30 @@ setopt numericglobsort      # Sort filenames numerically when it makes sense
 setopt BANG_HIST		    # Allow ! for accessing history
 setopt rm_star_wait         # if `rm *` wait 10 seconds before performing it!
 
+# Completion
+setopt always_to_end          # cursor moved to the end in full completion
+setopt hash_list_all          # hash everything before completion
+setopt complete_in_word     # Allow completion from within a word/phrase
+setopt list_ambiguous         # complete as much of a completion until it gets ambiguous.
+setopt listpacked
 # Completion Menu
 setopt auto_menu            # show completion menu on succesive tab press
 # use LS_COLORS colors in tab completion
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:descriptions' format '-- %d --'
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:complete:*:options' sort false
+zstyle ':fzf-tab:complete:_zlua:*' query-string input
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
+zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' popup-pad 0 0
+zstyle ":completion:*:git-checkout:*" sort false
 
 setopt promptsubst
 setopt long_list_jobs       # Better jobs
@@ -38,14 +58,15 @@ setopt auto_param_keys
 # setopt list_packed # Compact completion
 
 # History
-setopt SHARE_HISTORY
+setopt share_history                # share command history data
 setopt extended_history             # save beginning time and elapsed time before commands in history
 setopt hist_verify                  # expand history onto the current line instead of executing it
-setopt append_history               # append to the end of the history file
+setopt hist_expire_dups_first       # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt inc_append_history           # append to the end of the history file
 setopt hist_ignore_dups             # ignore duplication command history list
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_REDUCE_BLANKS
-setopt HIST_IGNORE_SPACE
+setopt hist_ignore_all_dups         # ignore duplicated commands history list
+setopt hist_reduce_blanks
+setopt hist_ignore_space            # ignore commands that start with space
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
@@ -87,3 +108,6 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 typeset -A ZSH_HIGHLIGHT_PATTERNS
 # To have commands starting with 'rm -rf' in red:
 ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' 'fg=white,bold,bg=red')
+
+#vi-mode
+VI_MODE_SET_CURSOR=true

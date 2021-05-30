@@ -43,30 +43,37 @@ background() {
 
 
 ## Alias section
-alias dot='cd ~/dotfiles'
 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias df='df -h'                                                # Human-readable sizes
 alias j='z'
 alias sudo='sudo '
+alias cat="bat"
+alias ctags="ctags -R --exclude=@~/.ctagsignore ."
 
 # Command Aliases (expanded at beginning of line"
 alias s='sudo '
 alias spac='sudo pacman -Syu '
-alias sup='sudo apt update && sudo apt upgrade'
+alias sup='sudo apt update && sudo apt upgrade -y'
 
 
 # "ignored" aliases, not expanded
+ialias cl="clear"
+ialias n="nvim "
 
 ialias cp="cp -iv"                                                # Confirm before overwriting something
-ialias rm='rm -iv'
+ialias rm='rm -v'
 ialias mv='mv -iv'
 ialias mkdir='mkdir -p'
 # ialias ls='ls --color=auto --group-directories-first'
-ialias la='exa -la'
+ialias l='exa --group-directories-first --icons -la --git --git-ignore'
+ialias la='exa --group-directories-first --icons -la'
 ialias lat='exa -laT'
-ialias ll='exa -l'
+ialias ll='exa --group-directories-first --icons -la --color-scale --time-style=long-iso --git --git-ignore -T -L2'
+ialias ll3='exa --group-directories-first --icons -la --git --git-ignore -T -L3'
+ialias ll4='exa --group-directories-first --icons -la --git --git-ignore -T -L4'
+ialias tree='exa --group-directories-first -T --icons'
 ialias ls='exa --group-directories-first'
 ialias exa='exa --group-directories-first'
 ialias lt='exa -T'
@@ -80,7 +87,8 @@ ialias path='echo $PATH | tr -s ":" "\n"'
 # Global aliases
 # Type letter, then space, ie "ls- al T[space]" will become "ls -al | tail"
 alias -g L='| less'
-alias -g G='| egrep --color'
+alias -g G='| rg '
+# alias -g G='| egrep --color'
 alias -g S='| sort'
 alias -g R='| sort -rn'
 alias -g H='| head'
