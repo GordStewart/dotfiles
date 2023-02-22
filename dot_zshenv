@@ -4,8 +4,12 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_RUNTIME_DIR="/tmp/runtime-gordon"
 
-#export EDITOR="nvim"
-#export VISUAL="nvim"
+export PAGER="less"
+export LESS="-FiMR --incsearch"
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# skip_global_compinit=1			# for zsh-autocomplete
 
 #zsh
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
@@ -17,5 +21,12 @@ export SAVEHIST=100000                   # Maximum events in history file
 # | PATH |
 # +------+
 
+export VOLTA_HOME="$HOME/.volta" # volta
+export PATH="$VOLTA_HOME/bin:$PATH" # volta
 export PATH="$HOME/bin:$PATH" # chezmoi
 export PATH="$HOME/neovim/bin:$PATH" # nvim
+
+# +--------+
+# | PYTHON |
+# +--------+
+export PYENV_ROOT="$HOME/.pyenv"
