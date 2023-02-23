@@ -74,11 +74,6 @@ select-word-style bash
 # +----------------+
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# +-----------------------+
-# | FAST-SYNTAX-HIGHLIGHT |
-# +----------------------+
-source $ZDOTDIR/plugins/catppuccin_macchiato-zsh-syntax-highlighting.zsh
-source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # +---------+
 # | ALIASES |
@@ -109,3 +104,8 @@ source /home/gordon/.config/broot/launcher/bash/br
 # +--------+
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# +-----------------------+
+# | ZSH-SYNTAX-HIGHLIGHT |
+# +----------------------+
+source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
