@@ -25,6 +25,7 @@ export VOLTA_HOME="$HOME/.volta" # volta
 export PATH="$VOLTA_HOME/bin:$PATH" # volta
 export PATH="$HOME/bin:$PATH" # chezmoi
 export PATH="$HOME/neovim/bin:$PATH" # nvim
+export PATH="$HOME/.dprint/bin/:$PATH" # dprint (nvim formatter)
 
 # +--------+
 # | PYTHON |
