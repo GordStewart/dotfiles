@@ -38,10 +38,15 @@ alias j='z'
 # +-----------+
 # | ls / exa  |
 # +-----------+
-alias ls='exa --icons --group-directories-first'
-alias la='exa --all --icons --group-directories-first'
-alias ll='exa --all --long --icons --group-directories-first'
-alias lt='exa --all --tree --icons --group-directories-first'
+alias lD='eza -lD --icons ' # only directories
+alias lf='eza -lF --icons --color=always | grep -v /' # only files
+alias lh='eza -dl --icons .* --group-directories-first' # only hidden
+alias ls='eza --icons --group-directories-first'
+alias la='eza --all --icons --group-directories-first'
+alias ll='eza --all --long --icons --group-directories-first'
+alias lt='eza --all --tree --icons --group-directories-first'
+alias lm='eza -al --sort=modified --icons' # sort by time modified
+alias lz='eza -alF --icons --color=always --sort=size | grep -v /'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -59,3 +64,20 @@ alias -g R='| sort -rn'
 alias -g H='| head'
 alias -g T='| tail'
 
+# +--------------+
+# | Windows Apps |
+# +--------------+
+alias explorer='/mnt/c/Windows/explorer.exe'
+
+# +-----------+
+# | fzf & apt |
+# +-----------+
+alias fapt="sudo true && apt list | sed 1d | cut -d/ -f1 | fzf -m --preview 'apt-cache show {1}' | xargs -ro sudo apt install"
+alias rmfapt="sudo true && apt list --installed | sed 1d | cut -d/ -f1 | fzf -m --preview 'apt-cache show {1}' | xargs -ro sudo apt remove"
+#
+#
+alias py="python"
+# +-------+
+# | Typos |
+# +-------+
+alias whcih='which'

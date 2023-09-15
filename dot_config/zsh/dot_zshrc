@@ -87,6 +87,12 @@ source $ZDOTDIR/aliases.zsh
 
 source $ZDOTDIR/keybinds.zsh
 
+# +-----------+
+# | FUNCTIONS |
+# +-----------+
+
+source $ZDOTDIR/functions.zsh
+
 # +--------+
 # | ZOXIDE |
 # +--------+

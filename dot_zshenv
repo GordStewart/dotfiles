@@ -11,6 +11,7 @@ export VISUAL="nvim"
 
 # skip_global_compinit=1			# for zsh-autocomplete
 
+export WINHOME='/mnt/c/Users/Gordon/'
 #zsh
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export HISTFILE="$ZDOTDIR/.zsh_history"
@@ -26,8 +27,14 @@ export PATH="$VOLTA_HOME/bin:$PATH" # volta
 export PATH="$HOME/bin:$PATH" # chezmoi
 export PATH="$HOME/neovim/bin:$PATH" # nvim
 export PATH="$HOME/.dprint/bin/:$PATH" # dprint (nvim formatter)
+export PATH="/usr/local/go/bin:$PATH" # go
 
 # +--------+
 # | PYTHON |
 # +--------+
 export PYENV_ROOT="$HOME/.pyenv"
+
+# +-------+
+# | CARGO |
+# +-------+
+. "$HOME/.cargo/env"
